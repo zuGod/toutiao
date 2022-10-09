@@ -1,7 +1,19 @@
 <template>
-  <div></div>
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
 <script>
-export default {};
+import { getAllChannelsAPI } from './api/index.js';
+export default {
+  async created() {
+    try {
+      const res = await getAllChannelsAPI();
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+};
 </script>
-<style lang="less" scoped></style>
+<style scoped></style>
