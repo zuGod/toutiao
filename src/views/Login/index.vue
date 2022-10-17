@@ -1,6 +1,8 @@
 <template>
   <div>
-    <van-nav-bar title="头条 - 登录" />
+    <van-nav-bar title="头条 - 登录">
+      <van-icon name="cross" slot="left" @click="$router.back()" />
+    </van-nav-bar>
     <div>
       <van-form @submit="onSubmit" ref="loginFrom">
         <van-field
@@ -67,6 +69,7 @@
 import { loginAPI, sendSmsApi } from '@/api';
 
 export default {
+  name: 'login',
   data() {
     return {
       user: {
@@ -91,6 +94,9 @@ export default {
         const { data } = await loginAPI(this.user);
         this.$store.commit('setUser', data.data);
         this.$toast.success('登录成功');
+
+        // 登录成功跳转首页页面
+        this.$router.back();
       } catch (err) {
         console.log(err);
         this.$toast.fail('登录失败');
@@ -127,5 +133,8 @@ export default {
 .send-sms-btn {
   background-color: #ededed;
   color: #666;
+}
+.van-icon {
+  color: #ededed;
 }
 </style>
