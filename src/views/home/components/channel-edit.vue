@@ -100,7 +100,6 @@ export default {
     },
     onAddChannel(channel) {
       this.myChannels.push(channel);
-      console.log(this.myChannels);
       //数据持久化处理
       if (this.user) {
         //

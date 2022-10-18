@@ -39,11 +39,13 @@
             class="follow-btn"
             round
             size="small"
+            :loading="followLoading"
             @click="onFollow"
             >已关注</van-button
           >
           <van-button
             v-else
+            :loading="followLoading"
             class="follow-btn"
             type="info"
             color="#3296fa"
@@ -62,6 +64,47 @@
           v-html="article.content"
         ></div>
         <van-divider>正文结束</van-divider>
+
+        <!-- 文章评论列表 -->
+        <CommentList
+          :source="article.art_id"
+          :list="commentList"
+          @onload-success="totalCommentCount = $event.total_count"
+        ></CommentList>
+
+        <!-- 底部区域 -->
+        <div class="article-bottom">
+          <van-button
+            class="comment-btn"
+            type="default"
+            round
+            size="small"
+            @click="isPostShow = true"
+            >写评论</van-button
+          >
+          <van-icon name="comment-o" :info="totalCommentCount" color="#777" />
+          <!-- <van-icon color="#777" name="star-o" /> -->
+          <CollectArticle
+            class="btn-item"
+            v-model="article.is_collected"
+            :article-id="article.art_id"
+          ></CollectArticle>
+          <Like-article
+            class="btn-item"
+            v-model="article.attitude"
+            :article-id="article.art_id"
+          ></Like-article>
+          <van-icon name="share" color="#777777"></van-icon>
+        </div>
+        <!-- /底部区域 -->
+
+        <!-- 发布评论 -->
+        <van-popup v-model="isPostShow" position="bottom"
+          ><CommentPost
+            :target="article.art_id"
+            @post-success="onPostSuccess"
+          ></CommentPost
+        ></van-popup>
       </div>
       <!-- /加载完成-文章详情 -->
 
@@ -80,24 +123,16 @@
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
     </div>
-
-    <!-- 底部区域 -->
-    <div class="article-bottom">
-      <van-button class="comment-btn" type="default" round size="small"
-        >写评论</van-button
-      >
-      <van-icon name="comment-o" info="123" color="#777" />
-      <van-icon color="#777" name="star-o" />
-      <van-icon color="#777" name="good-job-o" />
-      <van-icon name="share" color="#777777"></van-icon>
-    </div>
-    <!-- /底部区域 -->
   </div>
 </template>
 
 <script>
 import { getArticleById, addFollow, deleteFollow } from '@/api';
 import { ImagePreview } from 'vant';
+import CollectArticle from '@/components/collect-article/index.vue';
+import LikeArticle from '@/components/like-article/index.vue';
+import CommentList from './components/comment-list.vue';
+import CommentPost from './components/comment-post.vue';
 import './github-markdown.css';
 // ImagePreview({
 //   images: [
@@ -110,7 +145,12 @@ import './github-markdown.css';
 // });
 export default {
   name: 'ArticleIndex',
-  components: {},
+  components: {
+    CollectArticle,
+    LikeArticle,
+    CommentList,
+    CommentPost,
+  },
   props: {
     articleId: {
       type: [Number, String, Object],
@@ -122,6 +162,10 @@ export default {
       article: {}, //文章详情
       loading: true, //加载中的loading状态
       errStatus: 0,
+      followLoading: false,
+      totalCommentCount: 0,
+      isPostShow: false,
+      commentList: [],
     };
   },
   computed: {},
@@ -173,8 +217,19 @@ export default {
         }
         this.article.is_followed = !this.article.is_followed;
       } catch (err) {
-        this.$toast('请求失败');
+        let message = '操作失败';
+        if (err.response && err.response.status === 400) {
+          message = '你不能关注你自己！';
+        }
+        this.$toast(message);
       }
+      this.followLoading = false;
+    },
+    onPostSuccess() {
+      //关闭弹层
+      this.isPostShow = false;
+      //将发布内容显示到列表顶部
+      this.commentList.unshift(data.new_obj);
     },
   },
 };
@@ -251,7 +306,7 @@ export default {
     align-items: center;
     justify-content: center;
     background-color: #fff;
-    .van-icon {
+    /deep/ .van-icon {
       font-size: 61px;
       color: #b4b4b4;
     }
@@ -282,7 +337,7 @@ export default {
     height: 44px;
     border-top: 1px solid #d8d8d8;
     background-color: #fff;
-    .comment-btn {
+    /deep/ .comment-btn {
       width: 141px;
       height: 23px;
       border: 2px solid #eeeeee;
@@ -290,7 +345,7 @@ export default {
       line-height: 23px;
       color: #a7a7a7;
     }
-    .van-icon {
+    /deep/ .van-icon {
       font-size: 20px;
       .van-info {
         font-size: 8px;

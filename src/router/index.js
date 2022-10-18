@@ -33,6 +33,11 @@ const routes = [
     component: Article,
     //开启props传参
     props: true
+  },
+  {
+    name: 'user-profile',
+    path: '/user/profile',
+    component: () => import('@/views/user-profile')
   }
 ]
 
