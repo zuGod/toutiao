@@ -9,6 +9,7 @@ export default {
   async created() {
     try {
       const res = await getAllChannelsAPI();
+      console.log(res);
     } catch (err) {
       console.log(err);
     }
