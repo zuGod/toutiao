@@ -15,5 +15,9 @@ npm run serve
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Technical standard
+
+```
+vue2.0 + vuex + router + axios + jQuery + less + Es6 + webpack + vant
+```
+
