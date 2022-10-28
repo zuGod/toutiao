@@ -49,7 +49,7 @@ export default {
 
         this.$toast.success('更新成功');
       } catch (err) {
-        this.$toast.fail('更新失败');
+        this.$toast.fail('更新失败，请重新登录！');
       }
     },
   },

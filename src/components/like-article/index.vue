@@ -50,7 +50,7 @@ export default {
 
         this.$toast.success(status === 1 ? '点赞成功' : '取消点赞');
       } catch (err) {
-        this.$toast('失败');
+        this.$toast('失败，请重新登录！');
       }
       this.loading = false;
     },

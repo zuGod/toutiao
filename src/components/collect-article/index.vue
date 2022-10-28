@@ -48,7 +48,7 @@ export default {
 
         this.$toast.success(!this.value ? '收藏成功' : '取消收藏');
       } catch (err) {
-        this.$toast('失败');
+        this.$toast('失败，请重新登录！');
       }
       this.loading = false;
     },

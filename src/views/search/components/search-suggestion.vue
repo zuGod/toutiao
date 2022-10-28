@@ -45,7 +45,7 @@ export default {
         const { data } = await getSearchSuggestions(this.searchText);
         this.suggestions = data.data.options;
       } catch (err) {
-        this.$toast('获取数据失败');
+        this.$toast('获取数据失败，请重新登录！');
       }
     },
   },

@@ -95,7 +95,7 @@ export default {
         const { data } = await getAllChannelsAPI();
         this.allChannels = data.data.channels;
       } catch (err) {
-        this.$toast('数据获取失败');
+        this.$toast('数据获取失败，请重新登录！');
       }
     },
     onAddChannel(channel) {

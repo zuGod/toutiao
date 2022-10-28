@@ -60,7 +60,7 @@ export default {
         const { data } = await getUserProfile();
         this.user = data.data;
       } catch (err) {
-        this.$toast('数据获取失败');
+        this.$toast('数据获取失败，请重新登录！');
       }
     },
   },

@@ -59,7 +59,7 @@ export default {
       } catch (err) {
         this.error = true;
         this.loading = false;
-        this.$toast('数据加载失败');
+        this.$toast('数据加载失败，请重新登录！');
       }
     },
   },

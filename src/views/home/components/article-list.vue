@@ -64,7 +64,7 @@ export default {
         this.list.unshift(...data.data.results);
         this.isLoading = false;
       } catch (err) {
-        this.$toast('获取列表数据失败');
+        this.$toast('获取列表数据失败，请重新登录！');
       }
     },
     async onLoad() {
